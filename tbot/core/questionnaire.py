@@ -1,4 +1,3 @@
-from copy import deepcopy
 from typing import Callable, Any
 
 from telebot import types
@@ -22,7 +21,6 @@ class Questionnaire:
                  is_model_fields_empty: bool = False):
         self.chat_id = chat_id
         self.instance = instance
-        self.new_instance = deepcopy(self.instance)
         self.next_step_handler = next_step_handler
         self.callbacks = [None] * (len(self.Meta.fields) + 1)
         self._generate_callbacks()
@@ -42,7 +40,7 @@ class Questionnaire:
             field = self.Meta.fields[i]
             if hasattr(self, field) and hasattr(getattr(self, field), "run"):
                 questionnaire_class = getattr(self, field)
-                instance = getattr(self.new_instance, field)
+                instance = getattr(self.instance, field)
                 model_callback = self._generate_callback_for_model_field(
                     field, self.callbacks[i+1])
                 questionnaire = questionnaire_class(
@@ -54,21 +52,21 @@ class Questionnaire:
             else:
                 AskField(chat_id=self.chat_id,
                          field=field,
-                         instance=self.new_instance,
+                         instance=self.instance,
                          callback=self.callbacks[i+1])()
         return callback
 
     def _generate_callback_for_model_field(self, field: str,
                                            next_callback: Callable[[], None])\
             -> Callable[[Any], None]:
-        def callback(new_instance:
+        def callback(instance:
                      getattr(self, field).Meta.model) -> None:
-            self._set_value(field, new_instance)
+            self._set_value(field, instance)
             next_callback()
         return callback
 
     def _call_next_step_handler(self) -> None:
-        self.next_step_handler(self.new_instance)
+        self.next_step_handler(self.instance)
 
     def _ask_wanna_update_model(self) -> None:
         text = "Wanna update %s. It actual value is:\n%s" % (
@@ -102,7 +100,7 @@ class Questionnaire:
         self.callbacks[0]()
 
     def _set_value(self, field: str, value: Any) -> None:
-        setattr(self.new_instance, field, value)
+        setattr(self.instance, field, value)
 
 
 class AskField:

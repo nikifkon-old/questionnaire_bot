@@ -1,50 +1,68 @@
-import os
+from datetime import datetime
 
 import pytest
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine
 
-from tbot.database import DB
-from tbot.datatypes import User, House
-
-
-class TestDB(DB):
-    @classmethod
-    def setup(cls, db_file):
-        database = cls(db_file)
-        with open("create.sql") as file:
-            create_script = file.read()
-        for statement in create_script.split(";"):
-            database.cursor.execute(statement)
-        return database
-
-    def clear(self):
-        self.cursor.execute("DELETE FROM users")
-        self.cursor.execute("DELETE FROM houses")
-        self.cursor.execute("DELETE FROM events")
-
-    def drop(self):
-        self.close()
-        os.remove(self.db_file)
+from tbot.models import Event, House
+from tbot.db import Base
 
 
-@pytest.fixture(scope="session")
-def session_db():
-    database = TestDB.setup("test.db")
-    yield database
-    database.drop()
+@pytest.fixture
+def engine():
+    engine = create_engine("sqlite:///:memory:")
+    return engine
+
+
+@pytest.fixture
+def session_class(engine):
+    return sessionmaker(bind=engine)
 
 
 @pytest.fixture(scope="function")
-def db(session_db):
-    yield session_db
-    session_db.clear()
+def session(engine, session_class):
+    from tbot.models import Event, House, User  # noqa import all models for auto create test database
+    Base.metadata.create_all(engine)
+    session = session_class()
+    yield session
+    session.close()
+    Base.metadata.drop_all(bind=engine)
 
 
 @pytest.fixture
-def house():
-    return House(number=123, street="Lenina", area="Leniscij")
+def create_house(session):
+    data = {
+        "street": "Ленинская",
+        "number": 100,
+        "area": "Ленинский"
+    }
+    house = House(**data)
+    session.add(house)
+    return house
 
 
 @pytest.fixture
-def user(house):
-    return User(id=100500, name="John", phone="+12345678901", house=house,
-                flat=1)
+def create_event(session, create_house):
+    data = {
+        "title": "Горячая вода будет отключена",
+        "type": "Scheduled works",
+        "start": datetime(2020, 6, 30, 12),
+        "end": datetime(2020, 6, 30, 15),
+        "description": "В связи с заменой труб, водоснобжение в доме номер. 100 на улице Ленинкая будет недоступно 30.06 в период с 12:00 до 15:00.\nПриносим свои извенения за предостваленные неудабства.",  # noqa
+        "house_id": create_house.id,
+        "area": None,
+        "target": "house"
+    }
+    event = Event(**data)
+    session.add(event)
+    return event
+
+
+@pytest.fixture
+def user_data(create_house):
+    return {
+        "name": "Иван",
+        "phone": "+12345678901",
+        "house_id": create_house.id,
+        "flat": 99
+    }
