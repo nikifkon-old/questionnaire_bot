@@ -4,9 +4,21 @@ from sqlalchemy import create_engine
 
 from config import config
 
-sqlite_file_path = config["database"]["sqlite_file_path"]
-engine = create_engine("sqlite:///%s" % sqlite_file_path,
-                       echo=True)
+
+def get_db_url(db, username, password, host, port, db_name):
+    return f"{db}://{username}:{password}@{host}:{port}/{db_name}"
+
+
+postgres_url = get_db_url(
+    db="postgres",
+    username=config.get("database", "username"),
+    password=config.get("database", "password"),
+    host=config.get("database", "host"),
+    port=config.get("database", "port"),
+    db_name=config.get("database", "name"),
+)
+
+engine = create_engine(postgres_url, echo=True)
 Base = declarative_base()
 
 Session = sessionmaker(bind=engine)
