@@ -2,11 +2,13 @@ from typing import Optional
 
 from pydantic import BaseModel
 
+from .area import (BaseArea, BaseInDBArea, Area)
+
 
 class BaseHouse(BaseModel):
     number: Optional[int] = None
     street: Optional[str] = None
-    area: Optional[str] = None
+    area: Optional[BaseArea] = None
 
     @classmethod
     def from_string(cls, string: str):
@@ -16,19 +18,14 @@ class BaseHouse(BaseModel):
         if len(splited) < 3:
             print("missed required parametrs")
         else:
-            if (splited[0].isalnum()
-                and splited[1].isalpha()
-                    and splited[2].isalpha()):
-
+            if (splited[0].isalnum() and splited[1].isalpha() and splited[2].isalpha()):
                 return cls(number=int(splited[0]), street=splited[1],
                            area=splited[2])
             else:
                 print("wrong types")
 
     def __eq__(self, obj):
-        return (self.street == obj.street
-                and self.number == obj.number
-                and self.area == obj.area)
+        return (self.street == obj.street and self.number == obj.number and self.area == obj.area)
 
     def __repr__(self):
         return "<House number=%s, street='%s', area='%s'>"\
@@ -40,9 +37,13 @@ class BaseHouse(BaseModel):
 
 class BaseInDBHouse(BaseHouse):
     id: Optional[int] = None
+    area: Optional[BaseInDBArea] = None
 
     class Config:
         orm_mode = True
+
+    def to_base(self):
+        return BaseHouse(**self.dict())
 
     def __eq__(self, obj):
         return super().__eq__(obj) and self.id == obj.id
@@ -51,8 +52,7 @@ class BaseInDBHouse(BaseHouse):
         return "<House id=%s, number=%s, street='%s', area='%s'>"\
             % (self.id, self.number, self.street, self.area)
 
+
 # return via api
-
-
 class House(BaseInDBHouse):
-    pass
+    area: Optional[Area] = None

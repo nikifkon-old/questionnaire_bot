@@ -1,5 +1,5 @@
 from contextlib import contextmanager
-from typing import Optional, List
+from typing import Optional, List, Tuple
 
 from tbot import schemas
 from tbot.db import Session
@@ -30,7 +30,7 @@ def save_or_update_user(user: schemas.User) -> None:
 
 def save_user(user: schemas.User) -> None:
     with session_scope() as session:
-        obj = User.from_schemas(user)
+        obj = User.from_schema(user)
         session.add(obj)
 
 
@@ -72,36 +72,52 @@ def list_relevant_users_for_event(event: Event = None) -> List[schemas.User]:
         return [schemas.User.from_orm(user) for user in users]
 
 
-def list_house() -> List[schemas.House]:
+def list_user() -> Tuple[List[schemas.House], int]:
+    with session_scope() as session:
+        return [schemas.User.from_orm(user)
+                for user in session.query(User).all()], 200
+
+
+def list_house() -> Tuple[List[schemas.House], int]:
     with session_scope() as session:
         return [schemas.House.from_orm(house)
-                for house in session.query(House).all()]
+                for house in session.query(House).all()], 200
 
 
-def list_event() -> List[schemas.Event]:
+def list_event() -> Tuple[List[schemas.Event], int]:
     with session_scope() as session:
         return [schemas.Event.from_orm(event)
-                for event in session.query(Event).all()]
+                for event in session.query(Event).all()], 200
 
 
-def create_event(event: schemas.EventCreate) -> schemas.Event:
+def create_event(event: schemas.EventCreate
+                 ) -> Tuple[Optional[schemas.Event], int]:
     with session_scope() as session:
         obj = Event(**event.dict())
         session.add(obj)
         session.flush()
-        return schemas.Event.from_orm(obj)
+        data = schemas.Event.from_orm(obj).dict()
+        return data, 201
 
 
-def update_event(event: schemas.EventUpdate) -> schemas.Event:
+def update_event(event: schemas.EventUpdate
+                 ) -> Tuple[Optional[schemas.Event], int]:
     with session_scope() as session:
         obj = session.query(Event).filter_by(id=event.id).first()
+        if obj is None:
+            return {}, 404
+
         for key, value in event.dict().items():
             if value is not None:
                 setattr(obj, key, value)
-        return schemas.Event.from_orm(obj)
+        data = schemas.Event.from_orm(obj).dict()
+        return data, 200
 
 
-def delete_event(id: int):
+def delete_event(id: int) -> int:
     with session_scope() as session:
         obj = session.query(Event).filter_by(id=id).first()
+        if obj is None:
+            return 404
         session.delete(obj)
+        return 204

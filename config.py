@@ -1,10 +1,12 @@
 import configparser
+import os
 import logging
+
 logger = logging.getLogger(__file__)
 
 CONFIG_PATH = "config.ini"
 
-config = configparser.ConfigParser()
+config = configparser.ConfigParser(os.environ)
 
 try:
     config.read(CONFIG_PATH)
