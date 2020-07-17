@@ -1,49 +1,35 @@
-from typing import List
+import os
 
-from fastapi import FastAPI, status, Response
+from flask import Flask
+from flask_admin import Admin
 
-from tbot import schemas
-from tbot.bot import get_bot
-from tbot.utils import (list_relevant_users_for_event, list_house, list_event,
-                        create_event, update_event, delete_event)
-from tbot.listeners import event_handler  # noqa
+from tbot import listeners  # noqa
+from tbot import models
+from tbot.db import Session
+from tbot.api import routes
+from tbot.api.admin import init_login
+from tbot.api.admin.views import (
+    MyAdminIndexView, UserView, HouseView, EventView, AccountView, AreaView
+)
 
-app = FastAPI()
-bot = get_bot()
+app = Flask(__name__)
+app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
+app.config["JSON_AS_ASCII"] = False
 
-
-@app.get("/users/", response_model=List[schemas.User],
-         status_code=status.HTTP_200_OK)
-def list_users() -> List[schemas.User]:
-    return list_relevant_users_for_event()
-
-
-@app.get("/houses/", response_model=List[schemas.House],
-         status_code=status.HTTP_200_OK)
-def list_houses() -> List[schemas.House]:
-    return list_house()
+app.register_blueprint(routes.event_api)
+app.register_blueprint(routes.house_api)
+app.register_blueprint(routes.event_api)
+app.register_blueprint(routes.index_page)
 
 
-@app.get("/events/", response_model=List[schemas.Event],
-         status_code=status.HTTP_200_OK)
-def list_events() -> List[schemas.Event]:
-    events = list_event()
-    return events
+# Initialize flask-login
+init_login(app)
 
 
-@app.put("/events/", response_model=schemas.Event,
-         status_code=status.HTTP_201_CREATED)
-def create_events(event: schemas.EventCreate) -> dict:
-    return create_event(event)
-
-
-@app.patch("/events/", response_model=schemas.Event,
-           status_code=status.HTTP_200_OK)
-def update_events(event: schemas.EventUpdate) -> dict:
-    return update_event(event)
-
-
-@app.delete("/events/", status_code=status.HTTP_204_NO_CONTENT)
-def delete_events(id: int) -> None:
-    delete_event(id)
-    return Response(status_code=status.HTTP_204_NO_CONTENT)
+admin = Admin(app, index_view=MyAdminIndexView(),
+              base_template='my_master.html')
+admin.add_view(AccountView(models.Account, Session()))
+admin.add_view(EventView(models.Event, Session()))
+admin.add_view(HouseView(models.House, Session()))
+admin.add_view(AreaView(models.Area, Session()))
+admin.add_view(UserView(models.User, Session()))

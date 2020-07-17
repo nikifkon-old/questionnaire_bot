@@ -5,9 +5,9 @@ Run bot:
 python tbot/bot.py
 ```
 
-Run fast Api server
+Run flask dev server
 ```
-uvicorn tbot.api.main:app --reload
+flask run
 ```
 
 Create new migrations

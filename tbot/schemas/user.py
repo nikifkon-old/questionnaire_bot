@@ -2,7 +2,7 @@ from typing import Optional
 
 from pydantic import BaseModel
 
-from tbot.schemas.house import BaseHouse, BaseInDBHouse, House
+from .house import (BaseHouse, BaseInDBHouse, House)
 
 
 class BaseUser(BaseModel):
@@ -12,10 +12,7 @@ class BaseUser(BaseModel):
     flat: Optional[int] = None
 
     def __eq__(self, obj):
-        return (self.name == obj.name
-                and self.phone == obj.phone
-                and self.house == obj.house
-                and self.flat == obj.flat)
+        return (self.name == obj.name and self.phone == obj.phone and self.house == obj.house and self.flat == obj.flat)
 
     def __repr__(self):
         return "<User name='%s', phone='%s', house=%s, flat=%s>"\
@@ -28,10 +25,13 @@ class BaseUser(BaseModel):
 
 class BaseInDBUser(BaseUser):
     id: Optional[int] = None
-    house: Optional[BaseInDBHouse]
+    house: Optional[BaseInDBHouse] = None
 
     class Config:
         orm_mode = True
+
+    def to_base(self):
+        return BaseUser(**self.dict())
 
     def __repr__(self):
         return "<User id=%s name='%s', phone='%s', house=%s, flat=%s>"\
@@ -43,4 +43,4 @@ class BaseInDBUser(BaseUser):
 
 # return via api
 class User(BaseInDBUser):
-    house: Optional[House]
+    house: Optional[House] = None

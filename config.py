@@ -6,7 +6,7 @@ logger = logging.getLogger(__file__)
 
 CONFIG_PATH = "config.ini"
 
-config = configparser.SafeConfigParser(os.environ)
+config = configparser.ConfigParser(os.environ)
 
 try:
     config.read(CONFIG_PATH)

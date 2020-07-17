@@ -4,7 +4,8 @@ import pytest
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 
-from tbot.models import Event, House
+from tbot import schemas
+from tbot.models import User, Event, House
 from tbot.db import Base
 
 
@@ -30,39 +31,70 @@ def session(engine, session_class):
 
 
 @pytest.fixture
-def create_house(session):
+def create_house_schema():
     data = {
         "street": "Ленинская",
         "number": 100,
-        "area": "Ленинский"
+        "area": {
+            "name": "Ленинский"
+        }
     }
-    house = House(**data)
+    return schemas.House(**data)
+
+
+@pytest.fixture
+def create_house(session, create_house_schema):
+    house = House.from_schema(create_house_schema)
     session.add(house)
     return house
 
 
 @pytest.fixture
-def create_event(session, create_house):
+def create_event_schema(create_house_schema):
     data = {
         "title": "Горячая вода будет отключена",
-        "type": "Scheduled works",
+        "type": schemas.EventType.SCHEDUELD_WORK,
         "start": datetime(2020, 6, 30, 12),
         "end": datetime(2020, 6, 30, 15),
         "description": "В связи с заменой труб, водоснобжение в доме номер. 100 на улице Ленинкая будет недоступно 30.06 в период с 12:00 до 15:00.\nПриносим свои извенения за предостваленные неудабства.",  # noqa
-        "house_id": create_house.id,
+        "house": create_house_schema,
         "area": None,
-        "target": "house"
+        "target": schemas.EventTarget.HOUSE
     }
-    event = Event(**data)
+    return schemas.EventCreate(**data)
+
+
+@pytest.fixture
+def create_event(session, create_event_schema):
+    event = Event.from_schema(create_event_schema)
     session.add(event)
     return event
 
 
 @pytest.fixture
-def user_data(create_house):
+def user_data():
     return {
-        "name": "Иван",
-        "phone": "+12345678901",
-        "house_id": create_house.id,
-        "flat": 99
+        "name": "test_name",
+        "phone": "+123",
+        "flat": 99,
+        "house": {
+            "street": "test_street",
+            "area": {
+                "name": "test_area"
+            },
+            "number": 123
+        }
     }
+
+
+@pytest.fixture
+def create_user_schema(user_data):
+    return schemas.User(**user_data)
+
+
+@pytest.fixture
+def create_user(session, create_user_schema):
+    user = User.from_schema(create_user_schema)
+    session.add(user)
+    session.commit()
+    return user

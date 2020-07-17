@@ -20,7 +20,7 @@ def event_handler(session, flush_context):
     # handle updated messages
     for obj in session.dirty:
         if isinstance(obj, Event):
-            post = str(obj)
+            post = obj.post
             for message in obj.messages:
                 bot.edit_message_text(post, message.chat_id, message.id)
 
@@ -28,7 +28,7 @@ def event_handler(session, flush_context):
     for obj in session.new:
         if isinstance(obj, Event):
             chat_ids = [user.id for user in list_relevant_users_for_event(obj)]
-            post = str(obj)
+            post = obj.post
             for chat_id in chat_ids:
                 telegram_message = bot.send_message(chat_id, post)
                 # save message to database
