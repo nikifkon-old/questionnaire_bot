@@ -13,7 +13,7 @@ class BaseArea(BaseModel):
         return "<Area name=%s>" % (self.number,)
 
     def __str__(self):
-        return self.name
+        return self.name or ""
 
 
 class BaseInDBArea(BaseArea):

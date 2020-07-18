@@ -1,8 +1,7 @@
-import os
-
 from flask import Flask
 from flask_admin import Admin
 
+from config import Config
 from tbot import listeners  # noqa
 from tbot import models
 from tbot.db import Session
@@ -13,7 +12,7 @@ from tbot.api.admin.views import (
 )
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
+app.config["SECRET_KEY"] = Config.SECRET_KEY
 app.config["JSON_AS_ASCII"] = False
 
 app.register_blueprint(routes.event_api)

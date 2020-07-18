@@ -1,5 +1,10 @@
 ТЗ: [here](https://pastebin.com/KyEpdNUg)
 
+Installation
+```
+cp .env.example .env
+```
+
 Run bot:
 ```
 python tbot/bot.py

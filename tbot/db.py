@@ -2,7 +2,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 
-from config import config
+from config import Config
 
 
 def get_db_url(db, username, password, host, port, db_name):
@@ -11,11 +11,11 @@ def get_db_url(db, username, password, host, port, db_name):
 
 postgres_url = get_db_url(
     db="postgres",
-    username=config.get("database", "username"),
-    password=config.get("database", "password"),
-    host=config.get("database", "host"),
-    port=config.get("database", "port"),
-    db_name=config.get("database", "name"),
+    username=Config.DATABASE_USERNAME,
+    password=Config.DATABASE_PASSWORD,
+    host=Config.DATABASE_HOST,
+    port=Config.DATABASE_PORT,
+    db_name=Config.DATABASE_NAME
 )
 
 engine = create_engine(postgres_url, echo=True)

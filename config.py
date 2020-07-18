@@ -1,14 +1,17 @@
-import configparser
 import os
-import logging
 
-logger = logging.getLogger(__file__)
 
-CONFIG_PATH = "config.ini"
+class Config:
+    TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
 
-config = configparser.ConfigParser(os.environ)
+    DATABASE_HOST = os.getenv("DATABASE_HOST")
+    DATABASE_PORT = os.getenv("DATABASE_PORT")
+    DATABASE_USERNAME = os.getenv("DATABASE_USERNAME")
+    DATABASE_PASSWORD = os.getenv("DATABASE_PASSWORD")
+    DATABASE_NAME = os.getenv("DATABASE_NAME")
 
-try:
-    config.read(CONFIG_PATH)
-except FileNotFoundError:
-    logger.critical("[] Config file not found: %s" % CONFIG_PATH)
+    FLASK_DEBUG = os.getenv("FLASK_DEBUG", 0)
+    SECRET_KEY = os.getenv("SECRET_KEY")
+
+    ADMIN_LOGIN = os.getenv("ADMIN_LOGIN")
+    ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD")

@@ -1,7 +1,7 @@
 import telebot
-from config import config
+from config import Config
 
-bot = telebot.TeleBot(config.get("telegram", "token"))
+bot = telebot.TeleBot(Config.TELEGRAM_TOKEN)
 
 
 def get_bot():
