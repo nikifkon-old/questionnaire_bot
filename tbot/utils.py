@@ -1,9 +1,27 @@
 from contextlib import contextmanager
+from operator import attrgetter
 from typing import Optional, List, Tuple
 
 from tbot import schemas
 from tbot.db import Session
 from tbot.models import User, House, Event
+
+
+def deep_setter(obj, aliases: list, value):
+    if not isinstance(aliases, list):
+        raise TypeError("Alias must be a list")
+    if len(aliases) < 1:
+        raise ValueError("Alias list must be longer then 0")
+    if any(["." in el for el in aliases]):
+        raise ValueError("Elements can not contain dots")
+
+    if len(aliases) > 1:
+        last = aliases.pop()
+        dot_view = '.'.join(aliases)
+        get_penult = attrgetter(dot_view)
+        setattr(get_penult(obj), last, value)
+    else:
+        setattr(obj, aliases[0], value)
 
 
 @contextmanager

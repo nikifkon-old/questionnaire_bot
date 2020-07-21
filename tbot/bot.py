@@ -1,18 +1,24 @@
-import re
-
-import aiogram.utils.markdown as md
-from aiogram import executor, types
+from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.types import ParseMode
 
-from tbot import get_bot, get_dp
 from tbot import schemas
-from tbot.utils import get_user, save_user, update_user
+from tbot.utils import deep_setter, get_user, save_user, update_user
+from tbot import messages
+from aiogram import Bot, Dispatcher
+from aiogram.contrib.fsm_storage.redis import RedisStorage
+
+from config import Config
 
 
-bot = get_bot()
-dp = get_dp()
+bot = Bot(token=Config.TELEGRAM_TOKEN, parse_mode=ParseMode.HTML)
+storage = RedisStorage(
+    host=Config.REDIS_HOST,
+    port=Config.REDIS_PORT,
+    password=Config.REDIS_PASSWORD
+)
+dp = Dispatcher(bot, storage=storage)
 
 
 class ShortForm(StatesGroup):
@@ -21,34 +27,32 @@ class ShortForm(StatesGroup):
     number = State()
 
 
-# FIXME: this state group contain only one state, and one 'storage-state', may use storage straight
-class FullForm(StatesGroup):
-    get_next_field = State()
-    user = State()
+UPDATING_STATE = "updating"
 
 
 @dp.message_handler(commands=['start'])
 async def cmd_start(message: types.Message):
+    """
+    /start command handler
+    """
     continue_ = await process_if_user_exit(user_id=message.chat.id)
     if continue_:
-        payload_patter = re.compile(r"/start (?P<payload>.*)")
-        match = re.match(payload_patter, message.text)
-        if match is None:
-            await cmd_register(message)
-        else:
-            payload = match.group("payload")
-
-            # register user
+        payload = message.get_args()
+        if payload:
+            # TODO ivalid format
             house = schemas.House.from_string(payload)
             user = schemas.User(id=message.chat.id, house=house)
             save_user(user)
             await send_welcome_message(user)
+        else:
+            await cmd_register(message)
 
 
 @dp.message_handler(commands=["register"])
 async def cmd_register(message: types.Message):
     """
     User registresion entry point
+    /register command handler
     """
     continue_ = await process_if_user_exit(user_id=message.chat.id)
     if continue_:
@@ -58,20 +62,16 @@ async def cmd_register(message: types.Message):
 
 
 async def process_if_user_exit(user_id: int) -> bool:
+    """
+    Check if user already exit, and send message about it
+    """
     user = get_user(user_id)
     if user is None:
         return True
     else:
         await bot.send_message(
             chat_id=user_id,
-            text=md.text(
-                "You are already registered.",
-                "Your account data is:",
-                md.italic(str(user)),
-                "If you would like to update or full it. Go to /update.",
-                sep="\n"
-            ),
-            parse_mode=ParseMode.MARKDOWN
+            text=messages.YOU_ARE_ALREADY_REGISTERED_MESSAGE.format(user_data=str(user))
         )
         return False
 
@@ -126,97 +126,94 @@ async def process_number(message: types.Message, state: FSMContext):
 async def send_welcome_message(user: schemas.User):
     await bot.send_message(
         chat_id=user.id,
-        text=md.text(
-            "All right! Your now registed",
-            "Your account data is",
-            md.text("House", md.bold(str(user.house))),
-            sep="\n"
-        ),
-        parse_mode=ParseMode.MARKDOWN
+        text=messages.WELCOME_MESSAGE.format(user_data=user)
     )
 
 
 @dp.message_handler(commands=["update"])
 async def cmd_update(message: types.Message):
+    """
+    /update command handler
+    """
     chat_id = message.chat.id
     user = get_user(chat_id)
-    await bot.send_message(
-        chat_id=chat_id,
-        text=md.text(
-            "Your account data is: ",
-            md.italic(str(user)),
-            md.text("Please provide field you wanna update or type",
-                    md.bold("exit")),
-            sep="\n"
-        ),
-        parse_mode=ParseMode.MARKDOWN
-    )
-    await FullForm.get_next_field.set()
 
+    if user is not None:
+        state = dp.current_state(user=message.from_user.id)
+        await state.set_state(UPDATING_STATE)
+        await storage.set_data(user=message.from_user.id, data={"user": user.dict()})
 
-@dp.message_handler(state=FullForm.get_next_field)
-async def process_next_field(message: types.Message, state: FSMContext):
-    chat_id = message.chat.id
-
-    data = state.get_data()
-
-    # FIXME: this code should be in cmd_update, but I dont known how access state in entry point
-    if data.get("user") is None:
-        state.update_data(user=get_user(chat_id))
-
-    if message.text == "exit":
-        update_user(data["user"])
-
-        await state.finish()
         await bot.send_message(
             chat_id=chat_id,
-            text=md.text(
-                "Every this is ok",
-                "Now. Your account data is: ",
-                md.italic(str(data["user"])),
-                sep="\n"
-            ),
-            parse_mode=ParseMode.MARKDOWN
+            text=messages.CMD_UPDATE.format(user_data=user),
         )
     else:
-        payload = message.text.split(", ", maxsplit=1)
-        if len(payload) == 2:
-            # FIXME: this should be in schema models
-            user_keys = set(schemas.User.schema()[
-                            "properties"].keys()) - {"id", "house"}
-            house_keys = set(schemas.House.schema()[
-                "properties"].keys()) - {"id"}
+        pass  # TODO
 
-            async with state.proxy() as data:
-                if payload[0] in user_keys:
-                    setattr(data["user"], payload[0], payload[1])
-                elif payload[0] in house_keys:
-                    setattr(data["user"].house, payload[0], payload[1])
 
-                await bot.send_message(
-                    chat_id=chat_id,
-                    text=md.text(
-                        "Your account data is: ",
-                        md.italic(str(data["user"])),
-                        md.text("Please provide field you wanna update or type",
-                                md.bold("exit")),
-                        sep="\n"
-                    ),
-                    parse_mode=ParseMode.MARKDOWN
-                )
-                await FullForm.get_next_field.set()
+@dp.message_handler(state=UPDATING_STATE, commands=["exitupdate"])
+async def cmd_exitupdate(message: types.Message):
+    """
+    /exitupdate command handler in `updating` state
+    """
+    user_id = message.from_user.id
+    data = await storage.get_data(user=user_id)
+    user_json = data["user"]
+    user = schemas.User(**user_json)
+    update_user(user)
+    await bot.send_message(
+        chat_id=user_id,
+        text=messages.CMD_EXITUPDATE.format(user_data=user)
+    )
+    await storage.reset_state(user=user_id)
+    await storage.reset_data(user=user_id)
 
-        else:
-            await bot.send_message(
-                chat_id=chat_id,
-                text=md.text(
-                    "Invalid format or doesnt exist field",
-                    sep="\n"
-                ),
-                parse_mode=ParseMode.MARKDOWN
+
+@dp.message_handler(state=UPDATING_STATE)
+async def process_updating(message: types.Message):
+    """
+    Process update operation
+    """
+    user_id = message.from_user.id
+    data = await storage.get_data(chat=user_id)
+    user_json = data.get("user")
+    user = schemas.User(**user_json)
+    updated, data = update(text=message.text, user=user)
+    if updated:
+        await storage.set_data(user=user_id, data={"user": user.dict()})
+
+        await bot.send_message(
+            chat_id=user_id,
+            text=messages.UPDATE_ITERATION_SUCCESS.format(field=data["field"])
+        )
+    else:
+        await bot.send_message(
+            chat_id=user_id,
+            text=messages.UPDATE_ITERATION_FAILED.format(error_message=data["error_msg"])
+        )
+
+
+def update(text: str, user):
+    """
+    Update user by message text format like {user_alias}, {new_value}
+    """
+    # TODO: return updated user
+    if ", " in text:
+        key, value = text.split(", ")
+    else:
+        return False, {
+            "error_msg": messages.SEPERETE_BY_COMMA_ERROR
+        }
+
+    if key in schemas.user_aliases:
+        alias = schemas.user_aliases[key]
+        deep_setter(user, alias, value)
+        return True, {"field": key}
+
+    else:
+        return False, {
+            "error_msg": messages.NOT_VALID_FIELD_ERROR.format(
+                field=key,
+                fields=schemas.get_valid_user_fields()
             )
-            await FullForm.get_next_field.set()
-
-
-if __name__ == '__main__':
-    executor.start_polling(dp, skip_updates=True)
+        }

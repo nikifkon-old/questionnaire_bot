@@ -5,6 +5,20 @@ from pydantic import BaseModel
 from .house import (BaseHouse, BaseInDBHouse, House)
 
 
+user_aliases = {
+    "Username": ["name"],
+    "Phone number": ["phone"],
+    "Flat number": ["flat"],
+    "Street": ["house", "street"],
+    "Area": ["house", "area", "name"],
+    "House number": ["house", "number"]
+}
+
+
+def get_valid_user_fields():
+    return ", ".join(user_aliases.keys())
+
+
 class BaseUser(BaseModel):
     name: Optional[str] = None
     phone: Optional[str] = None
@@ -19,8 +33,13 @@ class BaseUser(BaseModel):
             % (self.name, self.phone, repr(self.house), self.flat)
 
     def __str__(self):
-        return "Name: %s\nphone: %s\nhouse: %s\nflat: %s"\
-            % (self.name, self.phone, str(self.house), self.flat)
+        result = ""
+        for key, alias in user_aliases.items():
+            import operator
+            getter = operator.attrgetter(".".join(alias))
+            value = getter(self)
+            result += "\n<i>{key}</i>: <b>{value}</b>".format(key=key, value=value)
+        return result
 
 
 class BaseInDBUser(BaseUser):

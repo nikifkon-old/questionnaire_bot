@@ -1,9 +1,15 @@
 ТЗ: [here](https://pastebin.com/KyEpdNUg)
 
-Installation
+# Installation
+
+Create `.env` file
 ```
 cp .env.example .env
 ```
+
+##### Note:
+
+Make sure your Postgres and Redis is working and the correct information is stored in the `.env` file
 
 Run bot:
 ```
@@ -15,6 +21,7 @@ Run flask dev server
 flask run
 ```
 
+## Migrations
 Create new migrations
 ```
 alembic revision --autogenerate -m "Message"
