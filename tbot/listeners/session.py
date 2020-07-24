@@ -1,12 +1,9 @@
 from sqlalchemy import event
 
-from tbot import get_bot
+from tbot.bot import bot
 from tbot.db import Session
 from tbot.models import Event, Message
 from tbot.utils import list_relevant_users_for_event
-
-
-bot = get_bot()
 
 
 @event.listens_for(Session, "after_flush")

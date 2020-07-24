@@ -1,8 +1,18 @@
 import os
 
+from distutils.util import strtobool
+
 
 class Config:
     TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
+    USE_POLLING = bool(strtobool(os.getenv("USE_POLLING", "False")))
+
+    WEBHOOK_HOST = os.getenv("HOST")
+    WEBHOOK_PATH = "/webhook/"
+    WEBHOOK_URL = f"{WEBHOOK_HOST}{WEBHOOK_PATH}"
+
+    WEBAPP_HOST = "0.0.0.0"
+    WEBAPP_PORT = os.getenv("WEBHOOK_PORT")
 
     DATABASE_HOST = os.getenv("DATABASE_HOST")
     DATABASE_PORT = os.getenv("DATABASE_PORT")
