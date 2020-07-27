@@ -1,18 +1,23 @@
 import os
+import dotenv
 
 from distutils.util import strtobool
+
+dotenv.load_dotenv()
 
 
 class Config:
     TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
     USE_POLLING = bool(strtobool(os.getenv("USE_POLLING", "False")))
+    PUBLIC_KEY = os.getenv("PUBLIC_KEY")
 
     WEBHOOK_HOST = os.getenv("HOST")
     WEBHOOK_PATH = "/webhook/"
     WEBHOOK_URL = f"{WEBHOOK_HOST}{WEBHOOK_PATH}"
 
     WEBAPP_HOST = "0.0.0.0"
-    WEBAPP_PORT = os.getenv("WEBHOOK_PORT")
+    WEBAPP_PORT = os.getenv("WEBAPP_PORT")
+    WEBHOOK_PORT = os.getenv("WEBHOOK_PORT")
 
     DATABASE_HOST = os.getenv("DATABASE_HOST")
     DATABASE_PORT = os.getenv("DATABASE_PORT")
@@ -29,3 +34,4 @@ class Config:
 
     ADMIN_LOGIN = os.getenv("ADMIN_LOGIN")
     ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD")
+

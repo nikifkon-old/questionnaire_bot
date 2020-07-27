@@ -1,6 +1,7 @@
 import logging
 
 from aiogram import executor
+from aiogram.types import InputFile
 from aiogram.utils.executor import start_webhook
 
 from config import Config
@@ -11,22 +12,22 @@ logging.basicConfig(level=logging.INFO)
 
 async def on_startup(app):
     """Simple hook for aiohttp application which manages webhook"""
+    logging.info(f"Setting up webhook url: {Config.WEBHOOK_URL}")
     await bot.delete_webhook()
-    await bot.set_webhook(Config.WEBHOOK_URL)
+    certificate = InputFile(Config.PUBLIC_KEY)
+    status = await bot.set_webhook(Config.WEBHOOK_URL, certificate=certificate)
+    if status:
+        logging.info("Webhook setting up successfully!")
+    else:
+        logging.error("Failed to setting up webhook!")
 
 
 async def on_shutdown(dp):
     logging.warning('Shutting down..')
-
-    # insert code here to run it before shutdown
-
-    # Remove webhook (not acceptable in some cases)
     await bot.delete_webhook()
 
-    # Close DB connection (if used)
     await dp.storage.close()
     await dp.storage.wait_closed()
-
     logging.warning('Bye!')
 
 
@@ -41,5 +42,6 @@ if __name__ == '__main__':
             on_shutdown=on_shutdown,
             skip_updates=True,
             host=Config.WEBAPP_HOST,
-            port=Config.WEBAPP_PORT,
+            port=Config.WEBHOOK_PORT,
         )
+
