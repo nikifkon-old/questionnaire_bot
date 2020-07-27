@@ -11,7 +11,6 @@ logging.basicConfig(level=logging.INFO)
 
 
 async def on_startup(app):
-    """Simple hook for aiohttp application which manages webhook"""
     logging.info(f"Setting up webhook url: {Config.WEBHOOK_URL}")
     await bot.delete_webhook()
     certificate = InputFile(Config.PUBLIC_KEY)
@@ -44,4 +43,3 @@ if __name__ == '__main__':
             host=Config.WEBAPP_HOST,
             port=Config.WEBHOOK_PORT,
         )
-
