@@ -1,6 +1,6 @@
 from sqlalchemy import event
 
-from tbot.bot import bot
+from tbot.bot import bot, loop
 from tbot.db import Session
 from tbot.models import Event, Message
 from tbot.utils import list_relevant_users_for_event
@@ -12,14 +12,14 @@ def event_handler(session, flush_context):
     for obj in session.deleted:
         if isinstance(obj, Event):
             for message in obj.messages:
-                bot.delete_message(message.chat_id, message.id)
+                loop.run_until_complete(bot.delete_message(message.chat_id, message.id))
 
     # handle updated messages
     for obj in session.dirty:
         if isinstance(obj, Event):
             post = obj.post
             for message in obj.messages:
-                bot.edit_message_text(post, message.chat_id, message.id)
+                loop.run_until_complete(bot.edit_message_text(post, message.chat_id, message.id))
 
     # handle new message
     for obj in session.new:
@@ -27,7 +27,7 @@ def event_handler(session, flush_context):
             chat_ids = [user.id for user in list_relevant_users_for_event(obj)]
             post = obj.post
             for chat_id in chat_ids:
-                telegram_message = bot.send_message(chat_id, post)
+                telegram_message = loop.run_until_complete(bot.send_message(chat_id, post))
                 # save message to database
                 message = Message(chat_id=chat_id, event_id=obj.id)
                 message.id = telegram_message.message_id
