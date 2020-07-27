@@ -50,7 +50,7 @@ class Area(Base, SchemasMixin[schemas.Area]):
     events = relationship("Event", back_populates="area")
 
     def __str__(self):
-        return self.name
+        return self.name or ""
 
 
 class House(Base, SchemasMixin[schemas.House]):
