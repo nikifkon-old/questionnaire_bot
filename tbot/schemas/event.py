@@ -2,7 +2,7 @@ from enum import Enum
 from datetime import datetime
 from typing import Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
 
 from .area import (BaseArea, BaseInDBArea, Area)
 from .house import (BaseHouse, BaseInDBHouse, House)
@@ -27,9 +27,21 @@ class BaseEvent(BaseModel):
     description: Optional[str] = None
     start: Optional[datetime] = None
     end: Optional[datetime] = None
+    target: Optional[EventTarget] = None
     house: Optional[BaseHouse] = None
     area: Optional[BaseArea] = None
-    target: Optional[EventTarget] = None
+
+    @validator("house")
+    def house_required_if_target_for_house(cls, v, values, **kwargs):
+        if v is None and values["target"] == EventTarget.HOUSE:
+            raise ValueError("House field is required if you specify this target")
+        return v
+
+    @validator("area")
+    def area_required_if_target_for_area(cls, v, values, **kwargs):
+        if v is None and values["target"] == EventTarget.AREA:
+            raise ValueError("Arae field is required if you specify this target")
+        return v
 
     def __eq__(self, obj):
         return (self.title == obj.title and self.type == obj.type and self.description == obj.description and self.start == obj.start and self.end == obj.end and self.house == obj.house and self.area == obj.area and self.target == obj.target)

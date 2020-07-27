@@ -95,8 +95,10 @@ class EventView(MyModelView):
 
     def on_model_change(self, form, model, is_created):
         data = form.data
-        data["area"] = schemas.Area.from_orm(data["area"])
-        data["house"] = schemas.House.from_orm(data["house"])
+        if data["area"]:
+            data["area"] = schemas.Area.from_orm(data["area"])
+        if data["house"]:
+            data["house"] = schemas.House.from_orm(data["house"])
         try:
             if is_created:
                 schemas.EventCreate(**data)
