@@ -3,6 +3,7 @@ from typing import Generic, TypeVar, Type
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.inspection import inspect
 from sqlalchemy.orm import relationship
+from werkzeug.security import generate_password_hash, check_password_hash
 
 from tbot import schemas
 from tbot.db import Base
@@ -152,6 +153,12 @@ class Account(Base):
     email = Column(String(120))
     password = Column(String(94))
 
+    def set_password(self, password):
+        self.password = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
+
     @property
     def is_authenticated(self):
         return True
@@ -168,4 +175,4 @@ class Account(Base):
         return self.id
 
     def __str__(self):
-        return self.username
+        return self.username or ""

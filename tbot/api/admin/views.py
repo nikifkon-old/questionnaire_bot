@@ -4,24 +4,23 @@ from flask import redirect, request, url_for
 from flask_admin import expose, helpers
 from flask_admin.contrib import sqla
 from pydantic import ValidationError as PydanticValidationError
-from wtforms import TextAreaField
+from wtforms import TextAreaField, PasswordField
 from wtforms.validators import ValidationError
 
 from tbot import schemas
+from tbot import models
 from tbot.utils import session_scope
 from .forms import LoginForm
 
 
 # Create customized model view class
 class MyModelView(sqla.ModelView):
-
     def is_accessible(self):
         return login.current_user.is_authenticated
 
 
 # Create customized index view class that handles login & registration
 class MyAdminIndexView(admin.AdminIndexView):
-
     @expose("/")
     def index(self):
         if not login.current_user.is_authenticated:
@@ -57,7 +56,21 @@ class HouseView(MyModelView):
 
 
 class AccountView(MyModelView):
-    pass
+    column_exclude_list = ("password",)
+    form_excluded_columns = ("password",)
+    form_extra_fields = {
+        "new_password": PasswordField("New password")
+    }
+
+    def on_model_change(self, form, account: models.Account, is_created):
+        new_password = form.new_password.data
+        if new_password is not None:
+            if len(new_password) < 4:
+                raise ValidationError("Password is too short. It must be at least 5 characters")
+            if not is_created and account.check_password(new_password):
+                raise ValidationError("This password is already in use")
+            account.set_password(new_password)
+        return account
 
 
 class AreaView(MyModelView):
