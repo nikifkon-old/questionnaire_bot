@@ -5,6 +5,7 @@ from aiogram.types import InputFile
 from aiogram.utils.executor import start_webhook
 
 from config import Config
+from tbot import handlers
 from tbot.bot import dp, bot
 
 logging.basicConfig(level=logging.INFO)
@@ -32,6 +33,7 @@ async def on_shutdown(dp):
 
 if __name__ == '__main__':
     if Config.USE_POLLING:
+        handlers.user.setup(dp)
         executor.start_polling(dp, skip_updates=True)
     else:
         start_webhook(
