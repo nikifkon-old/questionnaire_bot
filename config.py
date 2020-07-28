@@ -1,7 +1,7 @@
 import os
-import dotenv
-
 from distutils.util import strtobool
+
+import dotenv
 
 dotenv.load_dotenv()
 

@@ -1,10 +1,11 @@
 from aiogram import Dispatcher
 
-from .start import bot_start
-from .register import bot_register
-from .update import bot_update, process_updating
-from .exitupdate import bot_exitupdate
 from tbot.states import user as user_states
+
+from .exitupdate import bot_exitupdate
+from .register import bot_register
+from .start import bot_start
+from .update import bot_update, process_updating
 
 
 def setup(dp: Dispatcher):

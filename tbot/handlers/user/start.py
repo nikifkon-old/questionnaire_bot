@@ -1,9 +1,10 @@
 from aiogram import types
 
-from .register import bot_register
 from tbot import schemas
-from tbot.utils import save_user
 from tbot.handlers.utils import process_if_user_exit, send_welcome_message
+from tbot.utils import save_user
+
+from .register import bot_register
 
 
 async def bot_start(message: types.Message):

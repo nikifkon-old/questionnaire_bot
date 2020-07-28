@@ -1,5 +1,4 @@
-from .event import (EventType, EventTarget, BaseEvent,  # noqa
-                    BaseInDBEvent, Event, EventCreate, EventUpdate)
-from .house import (BaseHouse, BaseInDBHouse, House)  # noqa
-from .user import (BaseUser, BaseInDBUser, User, user_aliases, get_valid_user_fields)  # noqa
-from .area import (BaseArea, BaseInDBArea, Area)  # noqa
+from .area import Area, BaseArea, BaseInDBArea  # noqa
+from .event import BaseEvent, BaseInDBEvent, Event, EventCreate, EventTarget, EventType, EventUpdate  # noqa
+from .house import BaseHouse, BaseInDBHouse, House  # noqa
+from .user import BaseInDBUser, BaseUser, User, get_valid_user_fields, user_aliases  # noqa

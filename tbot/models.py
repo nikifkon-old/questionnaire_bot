@@ -1,13 +1,12 @@
-from typing import Generic, TypeVar, Type
+from typing import Generic, Type, TypeVar
 
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
 from sqlalchemy.inspection import inspect
 from sqlalchemy.orm import relationship
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 
 from tbot import schemas
 from tbot.db import Base
-
 
 SchemaType = TypeVar("SchemaType")
 

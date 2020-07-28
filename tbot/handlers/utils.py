@@ -1,5 +1,4 @@
-from tbot import messages
-from tbot import schemas
+from tbot import messages, schemas
 from tbot.bot import bot
 from tbot.utils import deep_setter, get_user
 

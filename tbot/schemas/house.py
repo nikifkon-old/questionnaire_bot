@@ -2,7 +2,7 @@ from typing import Optional
 
 from pydantic import BaseModel
 
-from .area import (BaseArea, BaseInDBArea, Area)
+from .area import Area, BaseArea, BaseInDBArea
 
 
 class BaseHouse(BaseModel):

@@ -1,10 +1,9 @@
 from aiogram import types
 
-from tbot import messages
-from tbot import schemas
+from tbot import messages, schemas
+from tbot.bot import bot, dp, storage
 from tbot.handlers.utils import update_user_by_text
 from tbot.states import user as user_states
-from tbot.bot import bot, dp, storage
 from tbot.utils import get_user
 
 

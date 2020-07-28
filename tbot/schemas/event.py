@@ -1,11 +1,11 @@
-from enum import Enum
 from datetime import datetime
+from enum import Enum
 from typing import Optional
 
 from pydantic import BaseModel, validator
 
-from .area import (BaseArea, BaseInDBArea, Area)
-from .house import (BaseHouse, BaseInDBHouse, House)
+from .area import Area, BaseArea, BaseInDBArea
+from .house import BaseHouse, BaseInDBHouse, House
 
 
 class EventType(str, Enum):

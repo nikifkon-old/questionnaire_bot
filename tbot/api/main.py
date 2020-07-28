@@ -4,12 +4,10 @@ from flask_admin import Admin
 from config import Config
 from tbot import listeners  # noqa
 from tbot import models
-from tbot.db import Session
 from tbot.api import routes
 from tbot.api.admin import init_login
-from tbot.api.admin.views import (
-    MyAdminIndexView, UserView, HouseView, EventView, AccountView, AreaView
-)
+from tbot.api.admin.views import AccountView, AreaView, EventView, HouseView, MyAdminIndexView, UserView
+from tbot.db import Session
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = Config.SECRET_KEY

@@ -4,8 +4,8 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 
 from tbot import schemas
 from tbot.bot import dp
-from tbot.utils import save_user
 from tbot.handlers.utils import process_if_user_exit
+from tbot.utils import save_user
 
 
 class ShortForm(StatesGroup):

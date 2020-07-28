@@ -1,10 +1,10 @@
 from contextlib import contextmanager
 from operator import attrgetter
-from typing import Optional, List, Tuple
+from typing import List, Optional, Tuple
 
 from tbot import schemas
 from tbot.db import Session
-from tbot.models import User, House, Event
+from tbot.models import Event, House, User
 
 
 def deep_setter(obj, aliases: list, value):

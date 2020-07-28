@@ -1,9 +1,8 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, jsonify, request
 from pydantic import ValidationError
 
 from tbot import schemas
-from tbot.utils import (list_event, create_event, update_event, delete_event)
-
+from tbot.utils import create_event, delete_event, list_event, update_event
 
 event_api = Blueprint("event_api", __name__, url_prefix="/events/")
 

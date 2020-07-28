@@ -4,12 +4,12 @@ from flask import redirect, request, url_for
 from flask_admin import expose, helpers
 from flask_admin.contrib import sqla
 from pydantic import ValidationError as PydanticValidationError
-from wtforms import TextAreaField, PasswordField
+from wtforms import PasswordField, TextAreaField
 from wtforms.validators import ValidationError
 
-from tbot import schemas
-from tbot import models
+from tbot import models, schemas
 from tbot.utils import session_scope
+
 from .forms import LoginForm
 
 

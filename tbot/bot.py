@@ -1,8 +1,8 @@
 import asyncio
-from aiogram.types import ParseMode
 
 from aiogram import Bot, Dispatcher
 from aiogram.contrib.fsm_storage.redis import RedisStorage
+from aiogram.types import ParseMode
 
 from config import Config
 

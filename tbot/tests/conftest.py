@@ -1,12 +1,12 @@
 from datetime import datetime
 
 import pytest
-from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
 from tbot import schemas
-from tbot.models import User, Event, House
 from tbot.db import Base
+from tbot.models import Event, House, User
 
 
 @pytest.fixture

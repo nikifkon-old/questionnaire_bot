@@ -1,7 +1,6 @@
 from aiogram import types
 
-from tbot import messages
-from tbot import schemas
+from tbot import messages, schemas
 from tbot.bot import bot, storage
 from tbot.utils import update_user
 

@@ -2,8 +2,7 @@ from typing import Optional
 
 from pydantic import BaseModel
 
-from .house import (BaseHouse, BaseInDBHouse, House)
-
+from .house import BaseHouse, BaseInDBHouse, House
 
 user_aliases = {
     "Username": ["name"],

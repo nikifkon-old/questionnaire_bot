@@ -6,7 +6,7 @@ from aiogram.utils.executor import start_webhook
 
 from config import Config
 from tbot import handlers
-from tbot.bot import dp, bot
+from tbot.bot import bot, dp
 
 logging.basicConfig(level=logging.INFO)
 

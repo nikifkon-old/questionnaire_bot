@@ -1,4 +1,4 @@
-from setuptools import setuptools, find_packages
+from setuptools import find_packages, setuptools
 
 setuptools.setup(
     name="tbot",
