@@ -1,3 +1,6 @@
+from copy import deepcopy
+from typing import Tuple
+
 from tbot import messages, schemas
 from tbot.bot import bot
 from tbot.utils import deep_setter, get_user
@@ -26,27 +29,47 @@ async def send_welcome_message(user: schemas.User):
     )
 
 
-def update_user_by_text(text: str, user):
+def update_user_by_text(user: schemas.User, text: str) -> Tuple[dict, bool]:
     """
     Update user by message text format like {user_alias}, {new_value}
+
+    :param user: The user you wanna update
+    :param text: Message text
+    :returns: A tuple with `result` data and `state`
+
+    If updated was successfully:
+        state is `True`
+        result is
+        {
+            "user": :obj:`schemas.User`,
+            "field": `str`
+        }
+    else:
+        state is `False`
+        result is
+        {
+            "error_msg": `str`
+        }
+
+
     """
-    # TODO: return updated user
     if ", " in text:
         key, value = text.split(", ")
     else:
-        return False, {
+        return {
             "error_msg": messages.SEPERETE_BY_COMMA_ERROR
-        }
+        }, False
 
     if key in schemas.user_aliases:
         alias = schemas.user_aliases[key]
-        deep_setter(user, alias, value)
-        return True, {"field": key}
+        new_user = deepcopy(user)
+        deep_setter(new_user, alias, value)
+        return {"field": key, "user": new_user}, True
 
     else:
-        return False, {
+        return {
             "error_msg": messages.NOT_VALID_FIELD_ERROR.format(
                 field=key,
                 fields=schemas.get_valid_user_fields()
             )
-        }
+        }, False

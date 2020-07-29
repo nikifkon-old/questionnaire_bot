@@ -4,7 +4,7 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 
 from tbot import schemas
 from tbot.bot import dp
-from tbot.handlers.utils import process_if_user_exit
+from tbot.handlers.utils import process_if_user_exit, send_welcome_message
 from tbot.utils import save_user
 
 
@@ -69,3 +69,4 @@ async def process_number(message: types.Message, state: FSMContext):
     # register user
     user = schemas.User(id=message.chat.id, house=data)
     save_user(user)
+    await send_welcome_message(user)

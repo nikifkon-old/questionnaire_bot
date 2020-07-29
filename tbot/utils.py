@@ -67,6 +67,15 @@ def get_user(user_id: int) -> Optional[schemas.User]:
         return schemas.User.from_orm(user)
 
 
+def delete_user_by_id(user_id: int) -> bool:
+    with session_scope() as session:
+        user = session.query(User).filter_by(id=user_id).first()
+        if user is None:
+            return False
+        session.delete(user)
+        return True
+
+
 def list_relevant_users_for_event(event: Event = None) -> List[schemas.User]:
     target = schemas.EventTarget.ALL
     if event:

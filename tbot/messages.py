@@ -1,7 +1,19 @@
 # /start
+START_MESSAGE = """Hello!
+Answer a few questions.
+"""
+
+INVALID_START_PAYLOAD_ERROR = """Oops..
+<b>Your payload is invalid.</b> Please try register manually by typing /register
+Error message:
+<b>{error_message}</b>
+"""
+
+# /register
 WELCOME_MESSAGE = """All right! Your now registed
 Your account data is:
 {user_data}
+If you would like to update your profile info. Type /update
 """
 
 YOU_ARE_ALREADY_REGISTERED_MESSAGE = """You are already registered.
@@ -46,3 +58,9 @@ SEPERETE_BY_COMMA_ERROR = """
 Please, seperate value by comma-space
 <i>Ex. Phone number, +12345678901</i>
 """
+
+YOU_ARE_NOT_REGISTERED_ERROR = """
+In order to {action}, you need to have one.
+Please Register first. Type /register
+"""
+
