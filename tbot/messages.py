@@ -64,3 +64,8 @@ In order to {action}, you need to have one.
 Please Register first. Type /register
 """
 
+# /delete_account
+DELETED_ACCOUNT_SUCCESSFULLY = """
+You are successfully delete your account.
+If you want to create new. Type /register
+"""
