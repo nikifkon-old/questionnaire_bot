@@ -1,0 +1,140 @@
+# English translations for PROJECT.
+# Copyright (C) 2020 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2020-07-30 13:37+0500\n"
+"PO-Revision-Date: 2020-07-30 12:44+0500\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.8.0\n"
+
+#: tbot/messages.py:6
+msgid ""
+"Hello!\n"
+"Answer a few questions.\n"
+msgstr ""
+
+#: tbot/messages.py:10
+msgid ""
+"Oops..\n"
+"<b>Your payload is invalid.</b> Please try register manually by typing "
+"/register\n"
+"Error message:\n"
+"<b>{error_message}</b>\n"
+msgstr ""
+
+#: tbot/messages.py:17
+msgid ""
+"All right! Your now registed\n"
+"Your account data is:\n"
+"{user_data}\n"
+"If you would like to update your profile info. Type /update\n"
+msgstr ""
+
+#: tbot/messages.py:23
+msgid ""
+"You are already registered.\n"
+"Your account data is:\n"
+"{user_data}\n"
+"If you would like to update or full it. Type /update.\n"
+msgstr ""
+
+#: tbot/messages.py:29
+msgid "Enter your area\n"
+msgstr ""
+
+#: tbot/messages.py:32
+msgid "Enter your street\n"
+msgstr ""
+
+#: tbot/messages.py:35
+msgid "Enter your house number\n"
+msgstr ""
+
+#: tbot/messages.py:38
+msgid "Opps... house number must contain only digits. Please try again\n"
+msgstr ""
+
+#: tbot/messages.py:42
+msgid ""
+"Your account data is\n"
+"{user_data}\n"
+"Please provide field you wanna and new value seprated by <b>comma-"
+"space</b>\n"
+"Ex. <i>Phone number</i>, <b>+12345678901</b>\n"
+"For save new data type /exitupdate\n"
+msgstr ""
+
+#: tbot/messages.py:49
+msgid ""
+"You successfully update your profile data:\n"
+"{user_data}\n"
+msgstr ""
+
+#: tbot/messages.py:53
+msgid ""
+"'{field}' successfully updated\n"
+"Please provide field you wanna and new value seprated by <b>comma-"
+"space</b>\n"
+"<i>Ex. Phone number, +12345678901</i>\n"
+"For save new data type /exitupdate\n"
+msgstr ""
+
+#: tbot/messages.py:59
+msgid ""
+"Oops..\n"
+"An error has occurred.\n"
+"Error message:\n"
+"<b>{error_message}</b>\n"
+"Please try again\n"
+msgstr ""
+
+#: tbot/messages.py:66
+msgid ""
+"\n"
+"Field '{field}' is not valid\n"
+"List of valid fields:\n"
+"{fields}\n"
+msgstr ""
+
+#: tbot/messages.py:72
+msgid ""
+"\n"
+"Please, seperate value by comma-space\n"
+"<i>Ex. Phone number, +12345678901</i>\n"
+msgstr ""
+
+#: tbot/messages.py:77
+msgid ""
+"\n"
+"In order to {action}, you need to have one.\n"
+"Please Register first. Type /register\n"
+msgstr ""
+
+#: tbot/messages.py:83
+msgid ""
+"\n"
+"You are successfully delete your account.\n"
+"If you want to create new. Type /register\n"
+msgstr ""
+
+#~ msgid ""
+#~ "Your account data is\n"
+#~ "{user_data}\n"
+#~ "Please provide field you wanna and "
+#~ "new value seprated by <b>comma-space</b>"
+#~ "\n"
+#~ "Ex. <i>Phone number</i>, <b>+12345678901</b>\n"
+#~ "For save new data type /exitupdate"
+#~ msgstr ""
+

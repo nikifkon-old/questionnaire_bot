@@ -51,3 +51,16 @@ pytest
 ```bash
 flake8
 ```
+
+## Locales
+```bash
+# extract locales
+pybabel extract tbot -o locales/tbot.pot
+# add new lang:
+# pybabel init -i locales/tbot.pot -d locales -D tbot -l LANG_CODE
+# update locales
+pybabel update -d locales -D tbot -i locales/tbot.pot
+# update your translations
+# compile locales
+pybabel compile -d locales -D tbot
+```

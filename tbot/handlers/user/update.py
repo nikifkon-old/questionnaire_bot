@@ -1,10 +1,12 @@
 from aiogram import types
 
 from tbot import messages, schemas
-from tbot.bot import bot, dp, storage
+from tbot.bot import bot, dp, i18n, storage
 from tbot.handlers.utils import update_user_by_text
 from tbot.states import user as user_states
 from tbot.utils import get_user
+
+_ = i18n.gettext
 
 
 async def bot_update(message: types.Message):
@@ -21,12 +23,12 @@ async def bot_update(message: types.Message):
 
         await bot.send_message(
             chat_id=chat_id,
-            text=messages.CMD_UPDATE.format(user_data=user),
+            text=_(messages.CMD_UPDATE).format(user_data=user),
         )
     else:
         await bot.send_message(
             chat_id=chat_id,
-            text=messages.YOU_ARE_NOT_REGISTERED_ERROR
+            text=_(messages.YOU_ARE_NOT_REGISTERED_ERROR)
         )
 
 
@@ -45,10 +47,10 @@ async def process_updating(message: types.Message):
 
         await bot.send_message(
             chat_id=user_id,
-            text=messages.UPDATE_ITERATION_SUCCESS.format(field=data["field"])
+            text=_(messages.UPDATE_ITERATION_SUCCESS).format(field=data["field"])
         )
     else:
         await bot.send_message(
             chat_id=user_id,
-            text=messages.UPDATE_ITERATION_FAILED.format(error_message=data["error_msg"])
+            text=_(messages.UPDATE_ITERATION_FAILED).format(error_message=data["error_msg"])
         )
