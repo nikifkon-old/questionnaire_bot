@@ -1,3 +1,4 @@
+from enum import Enum
 from typing import Optional
 
 from pydantic import BaseModel
@@ -8,10 +9,16 @@ user_aliases = {
     "Username": ["name"],
     "Phone number": ["phone"],
     "Flat number": ["flat"],
+    "Language": ["lang"],
     "Street": ["house", "street"],
     "Area": ["house", "area", "name"],
-    "House number": ["house", "number"]
+    "House number": ["house", "number"],
 }
+
+
+class Lang(Enum):
+    RU = "ru"
+    EN = "en"
 
 
 def get_valid_user_fields():
@@ -23,13 +30,14 @@ class BaseUser(BaseModel):
     phone: Optional[str] = None
     house: Optional[BaseHouse] = None
     flat: Optional[int] = None
+    lang: Optional[str] = Lang.RU.value
 
     def __eq__(self, obj):
         return (self.name == obj.name and self.phone == obj.phone and self.house == obj.house and self.flat == obj.flat)
 
     def __repr__(self):
-        return "<User name='%s', phone='%s', house=%s, flat=%s>"\
-            % (self.name, self.phone, repr(self.house), self.flat)
+        return "<User name='%s', phone='%s', house=%s, flat=%s, language=%s>"\
+            % (self.name, self.phone, repr(self.house), self.flat, self.lang)
 
     def __str__(self):
         result = ""
