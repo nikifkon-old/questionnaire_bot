@@ -18,7 +18,7 @@ postgres_url = get_db_url(
     db_name=Config.DATABASE_NAME
 )
 
-engine = create_engine(postgres_url, echo=True)
+engine = create_engine(postgres_url, echo=Config.DATABASE_ECHO)
 Base = declarative_base()
 
 Session = sessionmaker(bind=engine)

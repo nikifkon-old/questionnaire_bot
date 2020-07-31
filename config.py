@@ -24,6 +24,7 @@ class Config:
     DATABASE_USERNAME = os.getenv("DATABASE_USERNAME")
     DATABASE_PASSWORD = os.getenv("DATABASE_PASSWORD")
     DATABASE_NAME = os.getenv("DATABASE_NAME")
+    DATABASE_ECHO = bool(strtobool(os.getenv("DATABASE_ECHO", "False")))
 
     REDIS_HOST = os.getenv("REDIS_HOST")
     REDIS_PORT = os.getenv("REDIS_PORT")
