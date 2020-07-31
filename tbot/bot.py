@@ -27,5 +27,5 @@ storage = RedisStorage(
 )
 dp = Dispatcher(bot, storage=storage)
 
-i18n = I18nMiddleware(I18N_DOMAIN, LOCALES_DIR, default="ru")
+i18n = I18nMiddleware(I18N_DOMAIN, LOCALES_DIR)
 dp.middleware.setup(i18n)

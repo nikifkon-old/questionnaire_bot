@@ -3,11 +3,9 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 
 from tbot import messages, schemas
-from tbot.bot import dp, i18n
+from tbot.bot import dp
 from tbot.handlers.utils import process_if_user_exit, send_welcome_message
 from tbot.utils import save_user
-
-_ = i18n.gettext
 
 
 class ShortForm(StatesGroup):
@@ -25,7 +23,7 @@ async def bot_register(message: types.Message):
     if continue_:
         await ShortForm.area.set()
 
-        await message.reply(_(messages.ASK_AREA_MESSAGE))
+        await message.reply(messages.ASK_AREA_MESSAGE)
 
 
 @dp.message_handler(state=ShortForm.area)
@@ -36,7 +34,7 @@ async def process_area(message: types.Message, state: FSMContext):
     await state.update_data(area=message.text)
 
     await ShortForm.next()
-    await message.reply(_(messages.ASK_STREET_MESSAGE))
+    await message.reply(messages.ASK_STREET_MESSAGE)
 
 
 @dp.message_handler(state=ShortForm.street)
@@ -47,7 +45,7 @@ async def process_street(message: types.Message, state: FSMContext):
     await state.update_data(street=message.text)
 
     await ShortForm.next()
-    await message.reply(_(messages.ASK_HOUSE_NUMBER_MESSAGE))
+    await message.reply(messages.ASK_HOUSE_NUMBER_MESSAGE)
 
 
 @dp.message_handler(lambda message: not message.text.isdigit(), state=ShortForm.number)
@@ -55,7 +53,7 @@ async def process_number_ivalid(message: types.Message, state: FSMContext):
     """
     Process invalid user's house number
     """
-    await message.reply(_(messages.NOT_DIGITAL_NUMBER_ERROR))
+    await message.reply(messages.NOT_DIGITAL_NUMBER_ERROR)
 
 
 @dp.message_handler(state=ShortForm.number)

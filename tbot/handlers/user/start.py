@@ -1,13 +1,11 @@
 from aiogram import types
 
 from tbot import messages, schemas
-from tbot.bot import bot, i18n
+from tbot.bot import bot
 from tbot.handlers.utils import process_if_user_exit, send_welcome_message
 from tbot.utils import save_user
 
 from .register import bot_register
-
-_ = i18n.gettext
 
 
 async def bot_start(message: types.Message):
@@ -28,11 +26,11 @@ async def bot_start(message: types.Message):
             else:
                 await bot.send_message(
                     chat_id=chat_id,
-                    text=_(messages.INVALID_START_PAYLOAD_ERROR).format(error_message=data["error_msg"])
+                    text=messages.INVALID_START_PAYLOAD_ERROR.format(error_message=data["error_msg"])
                 )
         else:
             await bot.send_message(
                 chat_id=chat_id,
-                text=_(messages.START_MESSAGE)
+                text=messages.START_MESSAGE
             )
             await bot_register(message)

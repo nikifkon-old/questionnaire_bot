@@ -2,10 +2,8 @@ from copy import deepcopy
 from typing import Tuple
 
 from tbot import messages, schemas
-from tbot.bot import bot, i18n
+from tbot.bot import bot
 from tbot.utils import deep_setter, get_user
-
-_ = i18n.gettext
 
 
 async def process_if_user_exit(user_id: int) -> bool:
@@ -18,7 +16,7 @@ async def process_if_user_exit(user_id: int) -> bool:
     else:
         await bot.send_message(
             chat_id=user_id,
-            text=_(messages.YOU_ARE_ALREADY_REGISTERED_MESSAGE).format(user_data=str(user))
+            text=messages.YOU_ARE_ALREADY_REGISTERED_MESSAGE.format(user_data=str(user))
         )
         return False
     await send_welcome_message(user)
@@ -27,7 +25,7 @@ async def process_if_user_exit(user_id: int) -> bool:
 async def send_welcome_message(user: schemas.User):
     await bot.send_message(
         chat_id=user.id,
-        text=_(messages.WELCOME_MESSAGE).format(user_data=user)
+        text=messages.WELCOME_MESSAGE.format(user_data=user)
     )
 
 
@@ -59,7 +57,7 @@ def update_user_by_text(user: schemas.User, text: str) -> Tuple[dict, bool]:
         key, value = text.split(", ")
     else:
         return {
-            "error_msg": _(messages.SEPERETE_BY_COMMA_ERROR)
+            "error_msg": messages.SEPERETE_BY_COMMA_ERROR
         }, False
 
     if key in schemas.user_aliases:
@@ -70,7 +68,7 @@ def update_user_by_text(user: schemas.User, text: str) -> Tuple[dict, bool]:
 
     else:
         return {
-            "error_msg": _(messages.NOT_VALID_FIELD_ERROR).format(
+            "error_msg": messages.NOT_VALID_FIELD_ERROR.format(
                 field=key,
                 fields=schemas.get_valid_user_fields()
             )

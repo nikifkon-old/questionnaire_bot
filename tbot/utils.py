@@ -2,9 +2,20 @@ from contextlib import contextmanager
 from operator import attrgetter
 from typing import List, Optional, Tuple
 
+from babel.support import LazyProxy
+
 from tbot import schemas
 from tbot.db import Session
 from tbot.models import Event, House, User
+
+
+def concat_lazy(*args, sep="", enable_cache=False):
+    return LazyProxy(concat, *args, sep=sep, enable_cache=enable_cache)
+
+
+def concat(*args, sep=""):
+    res = sep.join([str(arg) for arg in args])
+    return res
 
 
 def deep_setter(obj, aliases: list, value):

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-07-30 13:37+0500\n"
+"POT-Creation-Date: 2020-07-31 13:11+0500\n"
 "PO-Revision-Date: 2020-07-30 12:44+0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -18,14 +18,16 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
-#: tbot/messages.py:6
+#: tbot/messages.py:7
 msgid ""
+"\n"
 "Hello!\n"
-"Answer a few questions.\n"
+"Answer a few questions below to use this bot.\n"
 msgstr ""
 
-#: tbot/messages.py:10
+#: tbot/messages.py:12
 msgid ""
+"\n"
 "Oops..\n"
 "<b>Your payload is invalid.</b> Please try register manually by typing "
 "/register\n"
@@ -33,65 +35,82 @@ msgid ""
 "<b>{error_message}</b>\n"
 msgstr ""
 
-#: tbot/messages.py:17
+#: tbot/messages.py:20
 msgid ""
-"All right! Your now registed\n"
+"\n"
+"All right! You register successfully.\n"
 "Your account data is:\n"
 "{user_data}\n"
-"If you would like to update your profile info. Type /update\n"
+"If you want to update or add to them, type /update\n"
 msgstr ""
 
-#: tbot/messages.py:23
+#: tbot/messages.py:27
 msgid ""
+"\n"
 "You are already registered.\n"
 "Your account data is:\n"
 "{user_data}\n"
-"If you would like to update or full it. Type /update.\n"
+"If you want to update or add to them, type /update\n"
 msgstr ""
 
-#: tbot/messages.py:29
-msgid "Enter your area\n"
+#: tbot/messages.py:34
+msgid "Enter your area"
 msgstr ""
 
-#: tbot/messages.py:32
-msgid "Enter your street\n"
-msgstr ""
-
-#: tbot/messages.py:35
-msgid "Enter your house number\n"
+#: tbot/messages.py:36
+msgid "Enter your street"
 msgstr ""
 
 #: tbot/messages.py:38
-msgid "Opps... house number must contain only digits. Please try again\n"
+msgid "Enter your house number"
 msgstr ""
 
-#: tbot/messages.py:42
+#: tbot/messages.py:40
 msgid ""
-"Your account data is\n"
-"{user_data}\n"
-"Please provide field you wanna and new value seprated by <b>comma-"
-"space</b>\n"
-"Ex. <i>Phone number</i>, <b>+12345678901</b>\n"
-"For save new data type /exitupdate\n"
+"\n"
+"Opps... house number must contain only digits. Please try again\n"
+msgstr ""
+
+#: tbot/messages.py:45
+msgid "Ex. <i>Phone number, +12345678901</i>"
+msgstr ""
+
+#: tbot/messages.py:47
+msgid ""
+"\n"
+"Please type the field you want to update and the new value for it, "
+"separated by a <b>comma and a space</b>\n"
 msgstr ""
 
 #: tbot/messages.py:49
 msgid ""
-"You successfully update your profile data:\n"
-"{user_data}\n"
+"\n"
+"For save new data, type /exitupdate\n"
 msgstr ""
 
 #: tbot/messages.py:53
 msgid ""
-"'{field}' successfully updated\n"
-"Please provide field you wanna and new value seprated by <b>comma-"
-"space</b>\n"
-"<i>Ex. Phone number, +12345678901</i>\n"
-"For save new data type /exitupdate\n"
+"\n"
+"Your account data is\n"
+"{user_data}\n"
 msgstr ""
 
 #: tbot/messages.py:59
 msgid ""
+"\n"
+"You successfully update your profile data:\n"
+"{user_data}\n"
+msgstr ""
+
+#: tbot/messages.py:65
+msgid ""
+"\n"
+"'{field}' successfully updated\n"
+msgstr ""
+
+#: tbot/messages.py:70
+msgid ""
+"\n"
 "Oops..\n"
 "An error has occurred.\n"
 "Error message:\n"
@@ -99,42 +118,30 @@ msgid ""
 "Please try again\n"
 msgstr ""
 
-#: tbot/messages.py:66
+#: tbot/messages.py:78
 msgid ""
 "\n"
-"Field '{field}' is not valid\n"
+"Field '{field}' is does not exist.\n"
 "List of valid fields:\n"
 "{fields}\n"
 msgstr ""
 
-#: tbot/messages.py:72
+#: tbot/messages.py:84
 msgid ""
 "\n"
-"Please, seperate value by comma-space\n"
-"<i>Ex. Phone number, +12345678901</i>\n"
+"Please, seperate value by comma-space"
 msgstr ""
 
-#: tbot/messages.py:77
+#: tbot/messages.py:87
 msgid ""
 "\n"
 "In order to {action}, you need to have one.\n"
-"Please Register first. Type /register\n"
+"Please Register first, type /register\n"
 msgstr ""
 
-#: tbot/messages.py:83
+#: tbot/messages.py:93
 msgid ""
 "\n"
 "You are successfully delete your account.\n"
-"If you want to create new. Type /register\n"
+"If you want to create new, type /register\n"
 msgstr ""
-
-#~ msgid ""
-#~ "Your account data is\n"
-#~ "{user_data}\n"
-#~ "Please provide field you wanna and "
-#~ "new value seprated by <b>comma-space</b>"
-#~ "\n"
-#~ "Ex. <i>Phone number</i>, <b>+12345678901</b>\n"
-#~ "For save new data type /exitupdate"
-#~ msgstr ""
-
