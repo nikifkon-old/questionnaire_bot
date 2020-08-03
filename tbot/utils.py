@@ -2,9 +2,20 @@ from contextlib import contextmanager
 from operator import attrgetter
 from typing import List, Optional, Tuple
 
+from babel.support import LazyProxy
+
 from tbot import schemas
 from tbot.db import Session
 from tbot.models import Event, House, User
+
+
+def concat_lazy(*args, sep="", enable_cache=False):
+    return LazyProxy(concat, *args, sep=sep, enable_cache=enable_cache)
+
+
+def concat(*args, sep=""):
+    res = sep.join([str(arg) for arg in args])
+    return res
 
 
 def deep_setter(obj, aliases: list, value):
@@ -65,6 +76,15 @@ def get_user(user_id: int) -> Optional[schemas.User]:
         if user is None:
             return None
         return schemas.User.from_orm(user)
+
+
+def delete_user_by_id(user_id: int) -> bool:
+    with session_scope() as session:
+        user = session.query(User).filter_by(id=user_id).first()
+        if user is None:
+            return False
+        session.delete(user)
+        return True
 
 
 def list_relevant_users_for_event(event: Event = None) -> List[schemas.User]:

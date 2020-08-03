@@ -1,0 +1,188 @@
+# Russian translations for PROJECT.
+# Copyright (C) 2020 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2020-07-31 13:11+0500\n"
+"PO-Revision-Date: 2020-07-30 12:44+0500\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ru\n"
+"Language-Team: ru <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.8.0\n"
+
+#: tbot/messages.py:7
+msgid ""
+"\n"
+"Hello!\n"
+"Answer a few questions below to use this bot.\n"
+msgstr ""
+"Привет!\n"
+"Ответь на несколько вопросов ниже.\n"
+
+#: tbot/messages.py:12
+msgid ""
+"\n"
+"Oops..\n"
+"<b>Your payload is invalid.</b> Please try register manually by typing "
+"/register\n"
+"Error message:\n"
+"<b>{error_message}</b>\n"
+msgstr ""
+"Упсс..\n"
+"<b>Переданна недопустимая информация.</b> Попробуйте зарегистрироваться "
+"вручную, напечатайте команду/register\n"
+"Текст сообщения об ошибке:\n"
+"<b>{error_message}</b>\n"
+
+#: tbot/messages.py:20
+msgid ""
+"\n"
+"All right! You register successfully.\n"
+"Your account data is:\n"
+"{user_data}\n"
+"If you want to update or add to them, type /update\n"
+msgstr ""
+"Отлично! Вы успешно зарегистрировались\n"
+"Данные вашего аккаунта:\n"
+"{user_data}\n"
+"Если вы хотите обновить их. Напечатайте команду /update\n"
+
+#: tbot/messages.py:27
+msgid ""
+"\n"
+"You are already registered.\n"
+"Your account data is:\n"
+"{user_data}\n"
+"If you want to update or add to them, type /update\n"
+msgstr ""
+"Вы уже зарегистрированны.\n"
+"Данные Вашего аккаунта:\n"
+"{user_data}\n"
+"Если Вы хотите обновить или дополнить их, напечатайте /update.\n"
+
+#: tbot/messages.py:34
+msgid "Enter your area"
+msgstr "Введите Ваш район"
+
+#: tbot/messages.py:36
+msgid "Enter your street"
+msgstr "Введите Вашу улицу"
+
+#: tbot/messages.py:38
+msgid "Enter your house number"
+msgstr "Введите номер Вашего дома"
+
+#: tbot/messages.py:40
+msgid ""
+"\n"
+"Opps... house number must contain only digits. Please try again\n"
+msgstr ""
+"Упсс... номер дома должен содержать только цифры. Пожалуйста, попробуйте "
+"ещё раз"
+
+#: tbot/messages.py:45
+msgid "Ex. <i>Phone number, +12345678901</i>"
+msgstr "Ex. <i>Phone number, +12345678901</i>"
+
+#: tbot/messages.py:47
+msgid ""
+"\n"
+"Please type the field you want to update and the new value for it, "
+"separated by a <b>comma and a space</b>\n"
+msgstr ""
+"\n"
+"Пожалуйста напечатайте поле которое вы хотите обновить и новое значение "
+"для него, разделив их <b>запятой и пробелом</b>\n"
+
+#: tbot/messages.py:49
+msgid ""
+"\n"
+"For save new data, type /exitupdate\n"
+msgstr ""
+"\n"
+"Для того, чтобы сохранить новые данные, напечатайте команду /exitupdate\n"
+
+#: tbot/messages.py:53
+msgid ""
+"\n"
+"Your account data is\n"
+"{user_data}\n"
+msgstr ""
+"Данные Вашего аккаунта:\n"
+"{user_data}\n"
+
+#: tbot/messages.py:59
+msgid ""
+"\n"
+"You successfully update your profile data:\n"
+"{user_data}\n"
+msgstr ""
+"Вы успешно обновили данные вашего аккаунта:\n"
+"{user_data}\n"
+
+#: tbot/messages.py:65
+msgid ""
+"\n"
+"'{field}' successfully updated\n"
+msgstr "Поле '{field}' успешно обновленно\n"
+
+#: tbot/messages.py:70
+msgid ""
+"\n"
+"Oops..\n"
+"An error has occurred.\n"
+"Error message:\n"
+"<b>{error_message}</b>\n"
+"Please try again\n"
+msgstr ""
+"Упсс..\n"
+"Произошла ошибка.\n"
+"Текст сообщения об ошибке:\n"
+"<b>{error_message}</b>\n"
+"Пожалуйста, попробуйте ещё раз\n"
+
+#: tbot/messages.py:78
+msgid ""
+"\n"
+"Field '{field}' is does not exist.\n"
+"List of valid fields:\n"
+"{fields}\n"
+msgstr ""
+"\n"
+"Поле '{field}' не существует\n"
+"Список возможных полей\n"
+"{fields}\n"
+
+#: tbot/messages.py:84
+msgid ""
+"\n"
+"Please, seperate value by comma-space"
+msgstr "Пожалуйста, разделите значения с помощью запятой и пробела\n"
+
+#: tbot/messages.py:87
+msgid ""
+"\n"
+"In order to {action}, you need to have one.\n"
+"Please Register first, type /register\n"
+msgstr ""
+"Для того, чтобы {action}, Вам нужно иметь его.\n"
+"Пожалуйста, зарегистрируйтесь сначала. Напечатайте команду /register\n"
+
+#: tbot/messages.py:93
+msgid ""
+"\n"
+"You are successfully delete your account.\n"
+"If you want to create new, type /register\n"
+msgstr ""
+"Вы успешно удалили свой аккаунт.\n"
+"Если вы хотите создать новый, напечатайте команду /register\n"
+

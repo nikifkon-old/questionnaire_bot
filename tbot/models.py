@@ -83,10 +83,11 @@ class User(Base, SchemasMixin[schemas.User]):
     house_id = Column(Integer, ForeignKey("houses.id"))
     house = relationship("House", back_populates="users")
     flat = Column(Integer)
+    lang = Column(String)
 
     def __repr__(self):
-        return "<User id=%s name='%s', phone='%s', house=%s, flat=%s>"\
-            % (self.id, self.name, self.phone, repr(self.house), self.flat)
+        return "<User id=%s name='%s', phone='%s', house=%s, flat=%s, language=%s>"\
+            % (self.id, self.name, self.phone, repr(self.house), self.flat, self.lang)
 
     def __str__(self):
         return self.name or self.id

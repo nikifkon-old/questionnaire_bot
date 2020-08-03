@@ -1,7 +1,7 @@
 from aiogram import types
 
 from tbot import messages, schemas
-from tbot.bot import bot, dp, storage
+from tbot.bot import bot, dp, i18n, storage
 from tbot.handlers.utils import update_user_by_text
 from tbot.states import user as user_states
 from tbot.utils import get_user
@@ -24,7 +24,10 @@ async def bot_update(message: types.Message):
             text=messages.CMD_UPDATE.format(user_data=user),
         )
     else:
-        pass  # TODO
+        await bot.send_message(
+            chat_id=chat_id,
+            text=messages.YOU_ARE_NOT_REGISTERED_ERROR
+        )
 
 
 async def process_updating(message: types.Message):
@@ -35,13 +38,15 @@ async def process_updating(message: types.Message):
     data = await storage.get_data(chat=user_id)
     user_json = data.get("user")
     user = schemas.User(**user_json)
-    updated, data = update_user_by_text(text=message.text, user=user)
+    data, updated = update_user_by_text(user, message.text)
     if updated:
-        await storage.set_data(user=user_id, data={"user": user.dict()})
+        user_dict = data["user"].dict()
+        await storage.set_data(user=user_id, data={"user": user_dict})
+        i18n.ctx_locale.set(user_dict["lang"])
 
         await bot.send_message(
             chat_id=user_id,
-            text=messages.UPDATE_ITERATION_SUCCESS.format(field=data["field"])
+            text=messages.UPDATE_ITERATION_SUCCESS_MESSAGE.format(field=data["field"])
         )
     else:
         await bot.send_message(
