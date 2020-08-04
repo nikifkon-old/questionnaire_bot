@@ -120,6 +120,6 @@ class EventView(MyModelView):
                 schemas.EventUpdate(**data)
         except PydanticValidationError as exc:
             error = exc.errors()[0]
-            msg = "Error in '{loc[0]}': {msg}".format(**error)
+            msg = "Ошибка в поле '{loc[0]}'. Текст сообщения: '{msg}'".format(**error)
             raise ValidationError(msg)
         return model

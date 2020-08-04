@@ -9,16 +9,16 @@ from .house import BaseHouse, BaseInDBHouse, House
 
 
 class EventType(str, Enum):
-    EMERGENCY = "Emergency"
-    SCHEDUELD_WORK = "Scheduled work"
-    UNSCHEDUELD_WORK = "Unscheduled work"
-    ADS = "Ads"
+    EMERGENCY = "Чрезвычайные ситуация"
+    SCHEDUELD_WORK = "Запланированные работы"
+    UNSCHEDUELD_WORK = "Незапланированные работы"
+    ADS = "Реклама"
 
 
 class EventTarget(str, Enum):
-    ALL = "all"
-    AREA = "area"
-    HOUSE = "house"
+    ALL = "Все пользователи бота"
+    AREA = "Жители района"
+    HOUSE = "Жители дома"
 
 
 class BaseEvent(BaseModel):
@@ -33,14 +33,14 @@ class BaseEvent(BaseModel):
 
     @validator("house")
     def house_required_if_target_for_house(cls, v, values, **kwargs):
-        if v is None and values["target"] == EventTarget.HOUSE:
-            raise ValueError("House field is required if you specify this target")
+        if values.get("target") is not None and v is None and values["target"] == EventTarget.HOUSE:
+            raise ValueError("Вам нужно заполнить поле 'house', если Вы указали фильтр 'house' в поле 'target'")
         return v
 
     @validator("area")
     def area_required_if_target_for_area(cls, v, values, **kwargs):
-        if v is None and values["target"] == EventTarget.AREA:
-            raise ValueError("Arae field is required if you specify this target")
+        if values.get("target") is not None and v is None and values["target"] == EventTarget.AREA:
+            raise ValueError("Вам нужно заполнить поле 'area', если Вы указали фильтр 'area' в поле 'target'")
         return v
 
     def __eq__(self, obj):
