@@ -5,13 +5,18 @@
 
     <div>
         {% if current_user.is_authenticated %}
-        <h1>Flask-Admin example</h1>
+        <h1>Админка для бота</h1>
         <p class="lead">
-            Authentication
+            Создать объявление, чтобы его увидели пользователи, можно во вкладке "Event"
         </p>
         <p>
-            This example shows how you can use Flask-Login for authentication. It is only intended as a basic
-            demonstration.
+        <ul>
+            <li> Вы можете создать новые аккаунты, во вклавке: <a href="/admin/account">Accounts</a> </li>
+            <li> Список пользователей бота можно посмотреть во вкладке <a href="/admin/user/">User</a> </li>
+            <li> Во вклавках <a href="/admin/house/">House</a> и <a href="/admin/area/">Area</a> храняться дома и районы
+                соответственно, они могут быть использованны для
+                создания таргетированных объявлений </li>
+        </ul>
         </p>
         {% else %}
         <form method="POST" action="">
